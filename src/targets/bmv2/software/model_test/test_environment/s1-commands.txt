@@ -1,57 +1,114 @@
-table_add SwitchIngress.lookup_feature0 extract_feature0 64&&&192 => 0 0
-table_add SwitchIngress.lookup_feature0 extract_feature0 32&&&224 => 0 1
-table_add SwitchIngress.lookup_feature0 extract_feature0 16&&&240 => 0 2
-table_add SwitchIngress.lookup_feature0 extract_feature0 8&&&248 => 0 3
-table_add SwitchIngress.lookup_feature0 extract_feature0 4&&&252 => 0 4
-table_add SwitchIngress.lookup_feature0 extract_feature0 2&&&254 => 0 5
-table_add SwitchIngress.lookup_feature0 extract_feature0 1&&&255 => 0 6
-table_add SwitchIngress.lookup_feature0 extract_feature0 0&&&255 => 0 7
-
-table_add SwitchIngress.lookup_feature1 extract_feature1 32&&&96 => 1 0
-table_add SwitchIngress.lookup_feature1 extract_feature1 16&&&112 => 0 1
-table_add SwitchIngress.lookup_feature1 extract_feature1 8&&&120 => 0 2
-table_add SwitchIngress.lookup_feature1 extract_feature1 4&&&124 => 0 3
-table_add SwitchIngress.lookup_feature1 extract_feature1 2&&&126 => 0 4
-table_add SwitchIngress.lookup_feature1 extract_feature1 1&&&127 => 0 5
-table_add SwitchIngress.lookup_feature1 extract_feature1 0&&&127 => 0 6
-
-table_add SwitchIngress.lookup_feature2 extract_feature2 64&&&192 => 3 0
-table_add SwitchIngress.lookup_feature2 extract_feature2 56&&&248 => 3 1
-table_add SwitchIngress.lookup_feature2 extract_feature2 52&&&252 => 3 2
-table_add SwitchIngress.lookup_feature2 extract_feature2 50&&&254 => 3 3
-table_add SwitchIngress.lookup_feature2 extract_feature2 49&&&255 => 2 4
-table_add SwitchIngress.lookup_feature2 extract_feature2 32&&&224 => 1 5
-table_add SwitchIngress.lookup_feature2 extract_feature2 28&&&252 => 1 6
-table_add SwitchIngress.lookup_feature2 extract_feature2 26&&&254 => 1 7
-table_add SwitchIngress.lookup_feature2 extract_feature2 25&&&255 => 1 8
-table_add SwitchIngress.lookup_feature2 extract_feature2 16&&&240 => 0 9
-table_add SwitchIngress.lookup_feature2 extract_feature2 8&&&248 => 0 10
-table_add SwitchIngress.lookup_feature2 extract_feature2 4&&&252 => 0 11
-table_add SwitchIngress.lookup_feature2 extract_feature2 2&&&254 => 0 12
-table_add SwitchIngress.lookup_feature2 extract_feature2 1&&&255 => 0 13
-table_add SwitchIngress.lookup_feature2 extract_feature2 0&&&255 => 0 14
-
-table_add SwitchIngress.lookup_feature3 extract_feature3 24&&&56 => 2 0
-table_add SwitchIngress.lookup_feature3 extract_feature3 20&&&60 => 2 1
-table_add SwitchIngress.lookup_feature3 extract_feature3 18&&&62 => 2 2
-table_add SwitchIngress.lookup_feature3 extract_feature3 17&&&63 => 2 3
-table_add SwitchIngress.lookup_feature3 extract_feature3 16&&&48 => 1 4
-table_add SwitchIngress.lookup_feature3 extract_feature3 8&&&56 => 0 5
-table_add SwitchIngress.lookup_feature3 extract_feature3 4&&&60 => 0 6
-table_add SwitchIngress.lookup_feature3 extract_feature3 2&&&62 => 0 7
-table_add SwitchIngress.lookup_feature3 extract_feature3 1&&&63 => 0 8
-table_add SwitchIngress.lookup_feature3 extract_feature3 0&&&63 => 0 9
-
-table_add SwitchIngress.decision read_lable 0 0 0 0 => 0
-table_add SwitchIngress.decision read_lable 0 0 0 1 => 0
-table_add SwitchIngress.decision read_lable 0 0 0 2 => 0
-table_add SwitchIngress.decision read_lable 0 1 0 0 => 0
-table_add SwitchIngress.decision read_lable 0 1 0 1 => 0
-table_add SwitchIngress.decision read_lable 0 1 0 2 => 0
-table_add SwitchIngress.decision read_lable 0 0 3 0 => 2
-table_add SwitchIngress.decision read_lable 0 1 3 0 => 2
-table_add SwitchIngress.decision read_lable 0 0 2 2 => 2
-table_add SwitchIngress.decision read_lable 0 0 3 2 => 2
-table_add SwitchIngress.decision read_lable 0 1 2 2 => 2
-table_add SwitchIngress.decision read_lable 0 1 3 2 => 2
-table_add SwitchIngress.decision read_lable 0 0 1 2 => 2
+register_write SwitchIngress.weights 0 9686628309486
+register_write SwitchIngress.weights 1 10706815662575
+register_write SwitchIngress.weights 2 25214228235835
+register_write SwitchIngress.weights 3 12031106641489
+register_write SwitchIngress.weights 4 22783413806766
+register_write SwitchIngress.weights 5 16997219174101
+register_write SwitchIngress.weights 6 12913096249839
+register_write SwitchIngress.weights 7 35119407839568
+register_write SwitchIngress.weights 8 4324296440145
+register_write SwitchIngress.weights 9 23142851055227
+register_write SwitchIngress.weights 10 9872007369093
+register_write SwitchIngress.weights 11 35094126088464
+register_write SwitchIngress.weights 12 29168176298414
+register_write SwitchIngress.weights 13 4098818811498
+register_write SwitchIngress.weights 14 4549078397200
+register_write SwitchIngress.weights 15 1759066061253
+register_write SwitchIngress.weights 16 34412366292496
+register_write SwitchIngress.weights 17 28745754969681
+register_write SwitchIngress.weights 18 33495795038613
+register_write SwitchIngress.weights 19 33236378775825
+register_write SwitchIngress.weights 20 32985631319674
+register_write SwitchIngress.weights 21 11006269845231
+register_write SwitchIngress.weights 22 21402360465028
+register_write SwitchIngress.weights 23 35125840624111
+register_write SwitchIngress.weights 24 32055970795793
+register_write SwitchIngress.weights 25 24242897392110
+register_write SwitchIngress.weights 26 11771843049903
+register_write SwitchIngress.weights 27 22537219643729
+register_write SwitchIngress.weights 28 30774206023291
+register_write SwitchIngress.weights 29 27500679614032
+register_write SwitchIngress.weights 30 7939256340207
+register_write SwitchIngress.weights 31 31850905112912
+register_write SwitchIngress.weights 32 11781011616122
+register_write SwitchIngress.weights 33 12930244991312
+register_write SwitchIngress.weights 34 33736913973562
+register_write SwitchIngress.weights 35 1924661926276
+register_write SwitchIngress.weights 36 1218102380113
+register_write SwitchIngress.weights 37 23040822327633
+register_write SwitchIngress.weights 38 3052729894575
+register_write SwitchIngress.weights 39 28425245929860
+register_write SwitchIngress.weights 40 33561687494341
+register_write SwitchIngress.weights 41 343588893166
+register_write SwitchIngress.weights 42 15437186068910
+register_write SwitchIngress.weights 43 21723071925998
+register_write SwitchIngress.weights 44 20610407436783
+register_write SwitchIngress.weights 45 24756847718673
+register_write SwitchIngress.weights 46 19603305443665
+register_write SwitchIngress.weights 47 4126675482960
+register_write SwitchIngress.weights 48 4216903121275
+register_write SwitchIngress.weights 49 366211725648
+register_write SwitchIngress.weights 50 30557778398736
+register_write SwitchIngress.weights 51 4506156926597
+register_write SwitchIngress.weights 52 20465477592592
+register_write SwitchIngress.weights 53 2872830641745
+register_write SwitchIngress.weights 54 12679700035856
+register_write SwitchIngress.weights 55 10967331901777
+register_write SwitchIngress.weights 56 15681774346504174
+register_write SwitchIngress.weights 57 15717925068115967
+register_write SwitchIngress.weights 58 41016163474083823
+register_write SwitchIngress.weights 59 16139252771284975
+register_write SwitchIngress.weights 60 21265694690061294
+register_write SwitchIngress.weights 61 13959379163940846
+register_write SwitchIngress.weights 62 12335914166488998
+register_write SwitchIngress.weights 63 15375427660541229
+register_write SwitchIngress.weights 64 441976181495661
+register_write SwitchIngress.weights 65 20720819292106223
+register_write SwitchIngress.weights 66 23458396609717231
+register_write SwitchIngress.weights 67 13959373814409199
+register_write SwitchIngress.weights 68 69689770329605870
+register_write SwitchIngress.weights 69 15612337485483902
+register_write SwitchIngress.weights 70 14810671215052269
+register_write SwitchIngress.weights 71 52277905255434221
+register_write SwitchIngress.weights 72 18389366658700783
+register_write SwitchIngress.weights 73 23559757829333323
+register_write SwitchIngress.weights 74 2355224026942188
+register_write SwitchIngress.weights 75 41538422772082639
+register_write SwitchIngress.weights 76 16284837014810607
+register_write SwitchIngress.weights 77 6838481845253215
+register_write SwitchIngress.weights 78 18329308017620957
+register_write SwitchIngress.weights 79 3459614917569552
+register_write SwitchIngress.weights 80 13740569252333347
+register_write SwitchIngress.weights 81 13466477392629631
+register_write SwitchIngress.weights 82 16276570399049708
+register_write SwitchIngress.weights 83 14942747920698847
+register_write SwitchIngress.weights 84 13539901956561998
+register_write SwitchIngress.weights 85 11268090543406104
+register_write SwitchIngress.weights 86 13816499962778765
+register_write SwitchIngress.weights 87 16210082553280383
+register_write SwitchIngress.weights 88 51707260918632431
+register_write SwitchIngress.weights 89 30854708200460239
+register_write SwitchIngress.weights 90 50897330968135655
+register_write SwitchIngress.weights 91 57294457329363966
+register_write SwitchIngress.weights 92 34232721461775726
+register_write SwitchIngress.weights 93 23395754537129190
+register_write SwitchIngress.weights 94 13537708199513582
+register_write SwitchIngress.weights 95 33099528892385255
+register_write SwitchIngress.weights 96 5933205744955391
+register_write SwitchIngress.weights 97 31965761067631599
+register_write SwitchIngress.weights 98 14064384679380991
+register_write SwitchIngress.weights 99 14877296773663869
+register_write SwitchIngress.weights 100 16777709760742767
+register_write SwitchIngress.weights 101 12832382447553918
+register_write SwitchIngress.weights 102 5584679761545191
+register_write SwitchIngress.weights 103 4503960744889839
+register_write SwitchIngress.weights 104 16218877054560239
+register_write SwitchIngress.weights 105 11644483597723551
+register_write SwitchIngress.weights 106 58836070162073599
+register_write SwitchIngress.weights 107 18497576718109694
+register_write SwitchIngress.weights 108 20047631329784778
+register_write SwitchIngress.weights 109 61234092440028655
+register_write SwitchIngress.weights 110 35330443243423085
+register_write SwitchIngress.weights 111 83014218557508
+register_write SwitchIngress.weights 112 69805789861117822
+register_write SwitchIngress.weights 113 2251838536548481

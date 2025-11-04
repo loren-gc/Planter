@@ -116,4 +116,5 @@ cython_debug/
 .DS_Store
 .idea/
 .ide
-
+Data/UNSW-NB15/UNSW-NB15_1.csv
+Data/UNSW-NB15/UNSW-NB15_2.csv

@@ -5,15 +5,65 @@
     },
     "model config": {
         "model": "NN",
-        "type": "1"
+        "type": "1",
+        "number of classes": 2,
+        "learning rate": 0.01,
+        "batch size": 10,
+        "num epoch": 15,
+        "number of layers": 3,
+        "num hidden nodes": [
+            56,
+            56
+        ],
+        "test table": "y"
     },
     "data config": {
         "dataset": "UNSW_5_tuple",
-        "number of features": 4
+        "number of features": 4,
+        "testing mode": "y"
     },
     "timer log": {
         "load data": {
-            "start": 1761853262.1782756
+            "start": 1762228731.973569,
+            "end": 1762228749.2140522
+        },
+        "train model": {
+            "start": 1762228785.211125,
+            "end": 1762228862.2577279
+        },
+        "convert model": {
+            "start": 1762228862.25773,
+            "end": 1762228862.2732918
+        },
+        "python-based test": {
+            "start": 1762228866.1307395,
+            "end": 1762228885.7956688
         }
+    },
+    "p4 config": {
+        "model": "NN",
+        "num hidden nodes": [
+            56,
+            56
+        ],
+        "number of features": 4,
+        "number of layers": 3,
+        "number of classes": 2,
+        "width of inputs": [
+            16.0,
+            16.0,
+            5.0,
+            8.0
+        ],
+        "table name": "Exact_Table.json"
+    },
+    "test config": {
+        "type of test": "classification"
+    },
+    "target config": {
+        "architecture": "tna",
+        "use case": "performance",
+        "device": "Tofino",
+        "type": "compile_auto"
     }
 }
