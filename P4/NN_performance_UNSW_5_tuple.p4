@@ -106,6 +106,15 @@ struct metadata_t {
     bit<8> flag ;
 }
 
+register<bit<64>>(1024) weights;
+bit<128> m1 = 0x55555555555555555555555555555555;
+bit<128> m2 = 0x33333333333333333333333333333333;
+bit<128> m4 = 0x0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f;
+bit<128> m8 = 0x00ff00ff00ff00ff00ff00ff00ff00ff;
+bit<128> m16= 0x0000ffff0000ffff0000ffff0000ffff;
+bit<128> m32= 0x00000000ffffffff00000000ffffffff;
+bit<128> m64= 0x0000000000000000ffffffffffffffff;
+
 /*************************************************************************
 *********************** Ingress Parser ***********************************
 *************************************************************************/
@@ -213,15 +222,6 @@ control SwitchIngress(
     action send(PortId_t port) {
         ig_tm_md.ucast_egress_port = port;
     }
-
-    register<bit<64>>(1024) weights;
-    bit<128> m1 = 0x55555555555555555555555555555555;
-    bit<128> m2 = 0x33333333333333333333333333333333;
-    bit<128> m4 = 0x0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f;
-    bit<128> m8 = 0x00ff00ff00ff00ff00ff00ff00ff00ff;
-    bit<128> m16= 0x0000ffff0000ffff0000ffff0000ffff;
-    bit<128> m32= 0x00000000ffffffff00000000ffffffff;
-    bit<128> m64= 0x0000000000000000ffffffffffffffff;
 
     action XNOR(bit<64> weight){
         meta.XNOROutput = weight^meta.bnnInput;
