@@ -70,7 +70,7 @@ header ethernet_h {
     bit<48> dstAddr;
     bit<48> srcAddr;
     bit<16> etherType;
-}
+};
 
 header Planter_h{
     bit<8> p;
@@ -82,12 +82,12 @@ header Planter_h{
     bit<32> feature2;
     bit<32> feature3;
     bit<32> result;
-}
+};
 
 struct header_t {
     ethernet_h   ethernet;
     Planter_h    Planter;
-}
+};
 
 struct metadata_t {
     bit<10> middle_c0;
@@ -104,7 +104,7 @@ struct metadata_t {
     bit<32> feature3;
     bit<32> result;
     bit<8> flag ;
-}
+};
 
 register<bit<64>>(1024) weights;
 
@@ -150,7 +150,7 @@ parser SwitchIngressParser(
         meta.flag = 1 ;
         transition accept;
     }
-}
+};
 
 /*************************************************************************
 *********************** Ingress Deparser *********************************
@@ -164,7 +164,7 @@ control SwitchIngressDeparser(
     apply {
         pkt.emit(hdr);
     }
-}
+};
 
 /*************************************************************************
 *********************** Egress Parser ***********************************
@@ -180,7 +180,7 @@ parser SwitchEgressParser(
         transition accept;
         }
 
-}
+};
 
 /*************************************************************************
 *********************** Egress Deparser *********************************
@@ -194,7 +194,7 @@ control SwitchEgressDeparser(
     apply {
         pkt.emit(hdr);
     }
-}
+};
 
 /*************************************************************************
 *********************** Ingress Processing********************************
