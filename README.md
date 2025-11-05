@@ -10,17 +10,22 @@ Planter is a modular framework for realizing one-click in-network machine learni
 
 ## Setting up the Planter environment <span id = "environment"></span>
 
-Planter requires python3+, with the packages listed in [requirements_pip3.txt](./src/configs/requirements_pip3.txt). To install the aforementioned packages, start your working environment and execute the following command:
+This forking of Planter requires Python 3.8. To ensure compatibility with all dependencies, a virtual environment (venv) must be created specifically with this version:
 
 ```
-pip3 install -r ./src/configs/requirements_pip3.txt
-``` 
-Some packages need to be installed using sudo python3:
+python38 -m venv python3.8_venv
+```
+
+Then, activate with:
 
 ```
-sudo pip3 install -r ./src/configs/requirements_sudo_pip3.txt
-``` 
-- Common Issues in Environment Setup [wiki](./src/help/Common_Issues/Envronment_Issues.md).
+source python3.8_venv/bin/activate
+```
+
+To install the dependeces:
+```
+pip3 install -r ./src/configs/requirements_final.txt
+```
 
 ## Getting started with Planter
 
@@ -29,7 +34,7 @@ First, prepare a working environment as described in the previous section [Link]
 Run the following command to start Planter in manual configuration mode. 
 
 ```
-python3 Planter.py -m
+python3.8 Planter.py -m
 ``` 
 
 Use help (```-h```) to see additional command options, e.g., ```-t```, and ```-d```. 
