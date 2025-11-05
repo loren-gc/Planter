@@ -70,7 +70,7 @@ header ethernet_h {
     bit<48> dstAddr;
     bit<48> srcAddr;
     bit<16> etherType;
-};
+}
 
 header Planter_h{
     bit<8> p;
@@ -82,12 +82,12 @@ header Planter_h{
     bit<32> feature2;
     bit<32> feature3;
     bit<32> result;
-};
+}
 
 struct header_t {
     ethernet_h   ethernet;
     Planter_h    Planter;
-};
+}
 
 struct metadata_t {
     bit<10> middle_c0;
@@ -104,11 +104,7 @@ struct metadata_t {
     bit<32> feature3;
     bit<32> result;
     bit<8> flag ;
-};
-
-/*
-register<bit<64>>(1024) weights;
-*/
+}
 
 /*************************************************************************
 *********************** Ingress Parser ***********************************
@@ -152,7 +148,7 @@ parser SwitchIngressParser(
         meta.flag = 1 ;
         transition accept;
     }
-};
+}
 
 /*************************************************************************
 *********************** Ingress Deparser *********************************
@@ -166,7 +162,7 @@ control SwitchIngressDeparser(
     apply {
         pkt.emit(hdr);
     }
-};
+}
 
 /*************************************************************************
 *********************** Egress Parser ***********************************
@@ -182,7 +178,7 @@ parser SwitchEgressParser(
         transition accept;
         }
 
-};
+}
 
 /*************************************************************************
 *********************** Egress Deparser *********************************
@@ -196,7 +192,7 @@ control SwitchEgressDeparser(
     apply {
         pkt.emit(hdr);
     }
-};
+}
 
 /*************************************************************************
 *********************** Ingress Processing********************************
@@ -208,8 +204,7 @@ control SwitchIngress(
     in ingress_intrinsic_metadata_t ig_intr_md,
     in ingress_intrinsic_metadata_from_parser_t ig_prsr_md,
     inout ingress_intrinsic_metadata_for_deparser_t ig_dprsr_md,
-    inout ingress_intrinsic_metadata_for_tm_t ig_tm_md,
-    inout register<bit<64>> weights) {
+    inout ingress_intrinsic_metadata_for_tm_t ig_tm_md) {
 
     action drop() {
         ig_dprsr_md.drop_ctl = 0x1;
@@ -218,7 +213,8 @@ control SwitchIngress(
     action send(PortId_t port) {
         ig_tm_md.ucast_egress_port = port;
     }
-    
+
+    register<bit<64>>(1024) weights;
     bit<128> m1 = 0x55555555555555555555555555555555;
     bit<128> m2 = 0x33333333333333333333333333333333;
     bit<128> m4 = 0x0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f;
@@ -813,7 +809,7 @@ control SwitchEgress(inout header_t hdr,
 *************************************************************************/
 
 Pipeline(SwitchIngressParser(),
-    SwitchIngress(weights),
+    SwitchIngress(),
     SwitchIngressDeparser(),
     SwitchEgressParser(),
     SwitchEgress(),
