@@ -15,29 +15,25 @@
             56,
             56
         ],
-        "test table": "y"
+        "test table": "n"
     },
     "data config": {
         "dataset": "UNSW_5_tuple",
         "number of features": 4,
-        "testing mode": "y"
+        "testing mode": "n"
     },
     "timer log": {
         "load data": {
-            "start": 1762228731.973569,
-            "end": 1762228749.2140522
+            "start": 1762469293.2674634,
+            "end": 1762469310.4208906
         },
         "train model": {
-            "start": 1762228785.211125,
-            "end": 1762228862.2577279
+            "start": 1762469364.4269152,
+            "end": 1762471527.6171803
         },
         "convert model": {
-            "start": 1762228862.25773,
-            "end": 1762228862.2732918
-        },
-        "python-based test": {
-            "start": 1762228866.1307395,
-            "end": 1762228885.7956688
+            "start": 1762471527.6171849,
+            "end": 1762471527.6299143
         }
     },
     "p4 config": {
