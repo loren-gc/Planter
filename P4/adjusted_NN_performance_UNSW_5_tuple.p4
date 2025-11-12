@@ -106,7 +106,7 @@ struct metadata_t {
     bit<8> flag ;
 }
 
-typedef bit<64> weights_data_t;]
+typedef bit<64> weights_data_t;
 typedef register<weights_data_t> weights_type;
 
 weights_type weights(1024);
