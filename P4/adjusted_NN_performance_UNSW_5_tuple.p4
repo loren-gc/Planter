@@ -107,9 +107,8 @@ struct metadata_t {
 }
 
 typedef bit<64> weights_data_t;
-typedef register<weights_data_t> weights_type;
 
-weights_type weights(1024);
+register <weights_data_t> weights(1024);
 
 /*************************************************************************
 *********************** Ingress Parser ***********************************
