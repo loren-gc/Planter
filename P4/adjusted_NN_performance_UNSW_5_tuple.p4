@@ -106,7 +106,9 @@ struct metadata_t {
     bit<8> flag ;
 }
 
-extern register <bit<64>> weights(1024);
+typedef bit<64> weights_data_t;
+
+extern register <weights_data_t> weights(1024);
 
 /*************************************************************************
 *********************** Ingress Parser ***********************************
