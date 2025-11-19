@@ -206,9 +206,7 @@ control SwitchIngress(
     inout ingress_intrinsic_metadata_for_deparser_t ig_dprsr_md,
     inout ingress_intrinsic_metadata_for_tm_t ig_tm_md) {
     
-    Register<bit<32>, bit<32>>(512) ip;
-    Register<bit<64>>(1024) weights;
-    Register<bit<48>>(16384) r;
+    Register<bit<10>>, <bit<64>>(1024) weights;
 
     action drop() {
         ig_dprsr_md.drop_ctl = 0x1;
