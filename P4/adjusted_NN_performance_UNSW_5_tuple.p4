@@ -214,7 +214,7 @@ control SwitchIngress(
         ig_tm_md.ucast_egress_port = port;
     }
     
-    extern register<bit<64>>(1024) weights;
+    Extern register<bit<64>>(1024) weights;
     bit<128> m1 = 0x55555555555555555555555555555555;
     bit<128> m2 = 0x33333333333333333333333333333333;
     bit<128> m4 = 0x0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f;
