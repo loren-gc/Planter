@@ -206,7 +206,7 @@ control SwitchIngress(
     inout ingress_intrinsic_metadata_for_deparser_t ig_dprsr_md,
     inout ingress_intrinsic_metadata_for_tm_t ig_tm_md) {
     
-    Register<bit<32>, bit<64>>(1024) weights;
+    Register<bit<10>, bit<64>>(1024) weights;
 
     action drop() {
         ig_dprsr_md.drop_ctl = 0x1;
@@ -281,7 +281,7 @@ control SwitchIngress(
         meta.middle_c1 = (bit<10>) x;
     }
 
-    action Layer0_Process(bit <32> offset){ 
+    action Layer0_Process(bit <10> offset){ 
         bit <64> weight = 0;
         weights.read( weight, (bit<32>)offset+0);
         XNOR(weight);
@@ -509,7 +509,7 @@ control SwitchIngress(
         BitCount_l0(meta.XNOROutput);
     }
 
-    action Layer1_Process(bit <32> offset){ 
+    action Layer1_Process(bit <10> offset){ 
         bit <64> weight = 0;
         meta.NextLayerInput = 0;
         weights.read(weight, (bit<32>)offset+0);
@@ -738,7 +738,7 @@ control SwitchIngress(
         BitCount_l1(meta.XNOROutput);
     }
 
-    action Layer2_Process(bit <32> offset){ 
+    action Layer2_Process(bit <10> offset){ 
         bit <64> weight = 0;
         weights.read( weight, (bit<32>)offset+0);
         XNOR(weight);
