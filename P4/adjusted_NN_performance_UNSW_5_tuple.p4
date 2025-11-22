@@ -104,6 +104,7 @@ struct metadata_t {
     bit<32> feature3;
     bit<32> result;
     bit<8> flag ;
+    bit<32> current_reg_index;
 }
 
 /*************************************************************************
@@ -283,7 +284,8 @@ control SwitchIngress(
 
     action Layer0_Process(bit <10> offset){ 
         bit <64> weight = 0;
-        weights.read( weight, (bit<32>)offset+0);
+        meta.current_reg_index = (bit<32>)offset+0
+        weights.read( weight, meta.current_reg_index);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
