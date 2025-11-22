@@ -566,7 +566,7 @@ control SwitchIngress(
 	BitCount_l1(meta.XNOROutput);
     }
 
-    action Layer1_Process(bit <10> offset){ 
+    action Layer1_Process(bit <10> offset){
         bit <64> weight = 0;
         meta.NextLayerInput = 0;
         weights.read(weight, (bit<32>)offset+0);
