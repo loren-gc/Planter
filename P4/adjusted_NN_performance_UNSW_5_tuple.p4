@@ -379,6 +379,9 @@ control SwitchIngress(
         XNOR(weight);
 	meta.XNOROutput = (bit<64>)meta.XNOROutput[55:0];
 	BitCount_l1(meta.XNOROutput);
+    }
+    
+    action Layer0_Process2(bit <10> offset){
 	meta.current_reg_index = (bit<32>)offset+19;
 	weights.read(weight, meta.current_reg_index);
 	XNOR(weight);
