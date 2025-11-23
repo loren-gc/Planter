@@ -833,8 +833,11 @@ control SwitchIngress(
         BuildInput();
 
         Layer0_Process1(0);
-	Layer0_Process2(0);
         meta.bnnInput = meta.NextLayerInput;
+        meta.NextLayerInput = 0;
+	
+	Layer0_Process2(0);
+	meta.bnnInput = meta.NextLayerInput;
         meta.NextLayerInput = 0;
 	
         Layer1_Process(56);
