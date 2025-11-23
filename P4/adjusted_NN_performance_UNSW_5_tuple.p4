@@ -423,6 +423,7 @@ control SwitchIngress(
     }
     
     action Layer0_Process2(bit <10> offset){
+    	bit <64> weight = 0;
         weights2.read( weight, (bit<32>)offset+19);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
