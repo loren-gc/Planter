@@ -104,7 +104,6 @@ struct metadata_t {
     bit<32> feature3;
     bit<32> result;
     bit<8> flag ;
-    bit<32> current_reg_index;
 }
 
 /*************************************************************************
@@ -206,68 +205,8 @@ control SwitchIngress(
     in ingress_intrinsic_metadata_from_parser_t ig_prsr_md,
     inout ingress_intrinsic_metadata_for_deparser_t ig_dprsr_md,
     inout ingress_intrinsic_metadata_for_tm_t ig_tm_md) {
-    
+
     Register<bit<64>, bit<32>>(1024) weights;
-    Register<bit<64>, bit<32>>(1024) weights2;
-    
-    /*
-    Register<bit<1>, bit<32>>(1024) weights_0;
-    Register<bit<1>, bit<32>>(1024) weights_1;
-    Register<bit<1>, bit<32>>(1024) weights_2;
-    Register<bit<1>, bit<32>>(1024) weights_3;
-    Register<bit<1>, bit<32>>(1024) weights_4;
-    Register<bit<1>, bit<32>>(1024) weights_5;
-    Register<bit<1>, bit<32>>(1024) weights_6;
-    Register<bit<1>, bit<32>>(1024) weights_7;
-    Register<bit<1>, bit<32>>(1024) weights_8;
-    Register<bit<1>, bit<32>>(1024) weights_9;
-    Register<bit<1>, bit<32>>(1024) weights_10;
-    Register<bit<1>, bit<32>>(1024) weights_11;
-    Register<bit<1>, bit<32>>(1024) weights_12;
-    Register<bit<1>, bit<32>>(1024) weights_13;
-    Register<bit<1>, bit<32>>(1024) weights_14;
-    Register<bit<1>, bit<32>>(1024) weights_15;
-    Register<bit<1>, bit<32>>(1024) weights_16;
-    Register<bit<1>, bit<32>>(1024) weights_17;
-    Register<bit<1>, bit<32>>(1024) weights_18;
-    Register<bit<1>, bit<32>>(1024) weights_19;
-    Register<bit<1>, bit<32>>(1024) weights_20;
-    Register<bit<1>, bit<32>>(1024) weights_21;
-    Register<bit<1>, bit<32>>(1024) weights_22;
-    Register<bit<1>, bit<32>>(1024) weights_23;
-    Register<bit<1>, bit<32>>(1024) weights_24;
-    Register<bit<1>, bit<32>>(1024) weights_25;
-    Register<bit<1>, bit<32>>(1024) weights_26;
-    Register<bit<1>, bit<32>>(1024) weights_27;
-    Register<bit<1>, bit<32>>(1024) weights_28;
-    Register<bit<1>, bit<32>>(1024) weights_29;
-    Register<bit<1>, bit<32>>(1024) weights_30;
-    Register<bit<1>, bit<32>>(1024) weights_31;
-    Register<bit<1>, bit<32>>(1024) weights_32;
-    Register<bit<1>, bit<32>>(1024) weights_33;
-    Register<bit<1>, bit<32>>(1024) weights_34;
-    Register<bit<1>, bit<32>>(1024) weights_35;
-    Register<bit<1>, bit<32>>(1024) weights_36;
-    Register<bit<1>, bit<32>>(1024) weights_37;
-    Register<bit<1>, bit<32>>(1024) weights_38;
-    Register<bit<1>, bit<32>>(1024) weights_39;
-    Register<bit<1>, bit<32>>(1024) weights_40;
-    Register<bit<1>, bit<32>>(1024) weights_41;
-    Register<bit<1>, bit<32>>(1024) weights_42;
-    Register<bit<1>, bit<32>>(1024) weights_43;
-    Register<bit<1>, bit<32>>(1024) weights_44;
-    Register<bit<1>, bit<32>>(1024) weights_45;
-    Register<bit<1>, bit<32>>(1024) weights_46;
-    Register<bit<1>, bit<32>>(1024) weights_47;
-    Register<bit<1>, bit<32>>(1024) weights_48;
-    Register<bit<1>, bit<32>>(1024) weights_49;
-    Register<bit<1>, bit<32>>(1024) weights_50;
-    Register<bit<1>, bit<32>>(1024) weights_51;
-    Register<bit<1>, bit<32>>(1024) weights_52;
-    Register<bit<1>, bit<32>>(1024) weights_53;
-    Register<bit<1>, bit<32>>(1024) weights_54;
-    Register<bit<1>, bit<32>>(1024) weights_55;
-    */
     
     action drop() {
         ig_dprsr_md.drop_ctl = 0x1;
@@ -276,7 +215,7 @@ control SwitchIngress(
     action send(PortId_t port) {
         ig_tm_md.ucast_egress_port = port;
     }
-    
+
     bit<128> m1 = 0x55555555555555555555555555555555;
     bit<128> m2 = 0x33333333333333333333333333333333;
     bit<128> m4 = 0x0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f;
@@ -284,7 +223,7 @@ control SwitchIngress(
     bit<128> m16= 0x0000ffff0000ffff0000ffff0000ffff;
     bit<128> m32= 0x00000000ffffffff00000000ffffffff;
     bit<128> m64= 0x0000000000000000ffffffffffffffff;
-    
+
     action XNOR(bit<64> weight){
         meta.XNOROutput = weight^meta.bnnInput;
         meta.XNOROutput = ~meta.XNOROutput;
@@ -342,7 +281,7 @@ control SwitchIngress(
         meta.middle_c1 = (bit<10>) x;
     }
 
-    action Layer0_Process1(bit <10> offset){ 
+    action Layer0_Process(bit <10> offset){ 
         bit <64> weight = 0;
         weights.read( weight, (bit<32>)offset+0);
         XNOR(weight);
@@ -420,161 +359,157 @@ control SwitchIngress(
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-    }
-    
-    action Layer0_Process2(bit <10> offset){
-    	bit <64> weight = 0;
-        weights2.read( weight, (bit<32>)offset+19);
+        weights.read( weight, (bit<32>)offset+19);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+20);
+        weights.read( weight, (bit<32>)offset+20);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+21);
+        weights.read( weight, (bit<32>)offset+21);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+22);
+        weights.read( weight, (bit<32>)offset+22);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+23);
+        weights.read( weight, (bit<32>)offset+23);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+24);
+        weights.read( weight, (bit<32>)offset+24);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+25);
+        weights.read( weight, (bit<32>)offset+25);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+26);
+        weights.read( weight, (bit<32>)offset+26);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+27);
+        weights.read( weight, (bit<32>)offset+27);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+28);
+        weights.read( weight, (bit<32>)offset+28);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+29);
+        weights.read( weight, (bit<32>)offset+29);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+30);
+        weights.read( weight, (bit<32>)offset+30);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+31);
+        weights.read( weight, (bit<32>)offset+31);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+32);
+        weights.read( weight, (bit<32>)offset+32);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+33);
+        weights.read( weight, (bit<32>)offset+33);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+34);
+        weights.read( weight, (bit<32>)offset+34);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+35);
+        weights.read( weight, (bit<32>)offset+35);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+36);
+        weights.read( weight, (bit<32>)offset+36);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+37);
+        weights.read( weight, (bit<32>)offset+37);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+38);
+        weights.read( weight, (bit<32>)offset+38);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+39);
+        weights.read( weight, (bit<32>)offset+39);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+40);
+        weights.read( weight, (bit<32>)offset+40);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+41);
+        weights.read( weight, (bit<32>)offset+41);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+42);
+        weights.read( weight, (bit<32>)offset+42);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+43);
+        weights.read( weight, (bit<32>)offset+43);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+44);
+        weights.read( weight, (bit<32>)offset+44);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+45);
+        weights.read( weight, (bit<32>)offset+45);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+46);
+        weights.read( weight, (bit<32>)offset+46);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+47);
+        weights.read( weight, (bit<32>)offset+47);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+48);
+        weights.read( weight, (bit<32>)offset+48);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+49);
+        weights.read( weight, (bit<32>)offset+49);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+50);
+        weights.read( weight, (bit<32>)offset+50);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+51);
+        weights.read( weight, (bit<32>)offset+51);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+52);
+        weights.read( weight, (bit<32>)offset+52);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+53);
+        weights.read( weight, (bit<32>)offset+53);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+54);
+        weights.read( weight, (bit<32>)offset+54);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
-        weights2.read( weight, (bit<32>)offset+55);
+        weights.read( weight, (bit<32>)offset+55);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
     }
 
-    action Layer1_Process(bit <10> offset){
+    action Layer1_Process(bit <10> offset){ 
         bit <64> weight = 0;
         meta.NextLayerInput = 0;
         weights.read(weight, (bit<32>)offset+0);
@@ -832,14 +767,10 @@ control SwitchIngress(
         meta.NextLayerInput = 0;
         BuildInput();
 
-        Layer0_Process1(0);
+        Layer0_Process(0);
         meta.bnnInput = meta.NextLayerInput;
         meta.NextLayerInput = 0;
-	
-	Layer0_Process2(0);
-	meta.bnnInput = meta.NextLayerInput;
-        meta.NextLayerInput = 0;
-	
+
         Layer1_Process(56);
         meta.bnnInput = meta.NextLayerInput;
         meta.NextLayerInput = 0;
