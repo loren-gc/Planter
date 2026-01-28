@@ -773,7 +773,7 @@ control SwitchIngress(
         meta.NextLayerInput = 0;
         BuildInput();
 
-        Layer0ProcessControl;
+        Layer0ProcessControl
         meta.bnnInput = meta.NextLayerInput;
         meta.NextLayerInput = 0;
 
