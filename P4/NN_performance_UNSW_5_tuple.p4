@@ -816,3 +816,4 @@ Pipeline(SwitchIngressParser(),
     SwitchEgressDeparser()) pipe;
 
 Switch(pipe) main;
+
