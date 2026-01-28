@@ -198,8 +198,8 @@ control SwitchEgressDeparser(
 *********************** Ingress Processing********************************
 **************************************************************************/
 
-control Layer0ProcessControl(
-    action Layer0_Process(bit <10> offset){ 
+control Layer0ProcessControl() {
+    action Layer0_Process(bit <10> offset{ 
         bit <64> weight = 0;
         weights.read( weight, (bit<32>)offset+0);
         XNOR(weight);
@@ -430,7 +430,7 @@ control Layer0ProcessControl(
     apply{
         Layer0_Process(0);
     }
-)
+}
 
 control SwitchIngress(
     inout header_t hdr,
