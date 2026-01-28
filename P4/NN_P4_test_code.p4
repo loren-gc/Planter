@@ -199,7 +199,7 @@ control SwitchEgressDeparser(
 **************************************************************************/
 
 control Layer0ProcessControl() {
-    action Layer0_Process(bit <10> offset{ 
+    action Layer0_Process(bit <10> offset){ 
         bit <64> weight = 0;
         weights.read( weight, (bit<32>)offset+0);
         XNOR(weight);
