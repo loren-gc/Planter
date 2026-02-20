@@ -208,6 +208,12 @@ control SwitchIngress(
 
     Register<bit<64>, bit<32>>(1024) weights;
     
+    RegisterAction<bit<64>, bit<32>, bit<64>>(weights) read_weight = {
+    	void apply(inout bit<64> reg_value, out bit<64> return_value) {
+        	return_value = reg_value;
+    	}
+    }
+    
     action drop() {
         ig_dprsr_md.drop_ctl = 0x1;
     }
