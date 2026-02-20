@@ -747,11 +747,11 @@ control SwitchIngress(
 
     action Layer2_Process(bit <10> offset){ 
         bit <64> weight = 0;
-        weights.read( weight, (bit<32>)offset+0);
+        weight = read_weight.execute((bit<32>)offset+0);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[55:0];
         BitCount_c0(meta.XNOROutput);
-        weights.read( weight, (bit<32>)offset+1);
+        weight = read_weight.execute((bit<32>)offset+1);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[55:0];
         BitCount_c1(meta.XNOROutput);
