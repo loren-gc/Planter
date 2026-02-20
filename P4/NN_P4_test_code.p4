@@ -117,6 +117,7 @@ parser SwitchIngressParser(
     out ingress_intrinsic_metadata_t ig_intr_md) {
 
     state start {
+    	meta.flag = 0;
         pkt.extract(ig_intr_md);
         pkt.advance(PORT_METADATA_SIZE);
         transition parse_ethernet;
@@ -174,6 +175,7 @@ parser SwitchEgressParser(
     out metadata_t meta,
     out egress_intrinsic_metadata_t eg_intr_md) {
     state start {
+    	meta.flag = 0;
         pkt.extract(eg_intr_md);
         transition accept;
     }
