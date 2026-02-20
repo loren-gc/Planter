@@ -198,10 +198,93 @@ control SwitchEgressDeparser(
 *********************** Ingress Processing********************************
 **************************************************************************/
 
-control Layer0ProcessControl() {
-    action Layer0_Process(bit <10> offset){ 
-        bit <64> weight = 0;
-        weights.read( weight, (bit<32>)offset+0);
+control SwitchIngress(
+    inout header_t hdr,
+    inout metadata_t meta,
+    in ingress_intrinsic_metadata_t ig_intr_md,
+    in ingress_intrinsic_metadata_from_parser_t ig_prsr_md,
+    inout ingress_intrinsic_metadata_for_deparser_t ig_dprsr_md,
+    inout ingress_intrinsic_metadata_for_tm_t ig_tm_md) {
+
+    Register<bit<64>, bit<32>>(1024) weights;
+    
+    action drop() {
+        ig_dprsr_md.drop_ctl = 0x1;
+    }
+
+    action send(PortId_t port) {
+        ig_tm_md.ucast_egress_port = port;
+    }
+
+    bit<128> m1 = 0x55555555555555555555555555555555;
+    bit<128> m2 = 0x33333333333333333333333333333333;
+    bit<128> m4 = 0x0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f;
+    bit<128> m8 = 0x00ff00ff00ff00ff00ff00ff00ff00ff;
+    bit<128> m16= 0x0000ffff0000ffff0000ffff0000ffff;
+    bit<128> m32= 0x00000000ffffffff00000000ffffffff;
+    bit<128> m64= 0x0000000000000000ffffffffffffffff;
+
+    action XNOR(bit<64> weight){
+        meta.XNOROutput = weight^meta.bnnInput;
+        meta.XNOROutput = ~meta.XNOROutput;
+    }
+
+    action BitCount_l0(bit<64> bitInput){
+        bit<128> x= (bit<128>)bitInput;
+        x = (x & m1 ) + ((x >>  1) & m1 );
+        x = (x & m2 ) + ((x >>  2) & m2 );
+        x = (x & m4 ) + ((x >>  4) & m4 );
+        x = (x & m8 ) + ((x >>  8) & m8 );
+        x = (x & m16) + ((x >> 16) & m16);
+        x = (x & m32) + ((x >> 32) & m32);
+        x = (x & m64) + ((x >> 64) & m64);
+        meta.activated = (x>22) ? (bit<1>)1 : 0;
+        meta.NextLayerInput = meta.NextLayerInput<<1;
+        meta.NextLayerInput = meta.NextLayerInput + (bit<64>)meta.activated;
+    }
+
+    action BitCount_l1(bit<64> bitInput){
+        bit<128> x= (bit<128>)bitInput;
+        x = (x & m1 ) + ((x >>  1) & m1 );
+        x = (x & m2 ) + ((x >>  2) & m2 );
+        x = (x & m4 ) + ((x >>  4) & m4 );
+        x = (x & m8 ) + ((x >>  8) & m8 );
+        x = (x & m16) + ((x >> 16) & m16);
+        x = (x & m32) + ((x >> 32) & m32);
+        x = (x & m64) + ((x >> 64) & m64);
+        meta.activated = (x>28) ? (bit<1>)1 : 0;
+        meta.NextLayerInput = meta.NextLayerInput<<1;
+        meta.NextLayerInput = meta.NextLayerInput + (bit<64>)meta.activated;
+    }
+
+    action BitCount_c0(bit<64> bitInput){
+        bit<128> x= (bit<128>)bitInput;
+        x = (x & m1 ) + ((x >>  1) & m1 );
+        x = (x & m2 ) + ((x >>  2) & m2 );
+        x = (x & m4 ) + ((x >>  4) & m4 );
+        x = (x & m8 ) + ((x >>  8) & m8 );
+        x = (x & m16) + ((x >> 16) & m16);
+        x = (x & m32) + ((x >> 32) & m32);
+        x = (x & m64) + ((x >> 64) & m64);
+        meta.middle_c0 = (bit<10>) x;
+    }
+
+    action BitCount_c1(bit<64> bitInput){
+        bit<128> x= (bit<128>)bitInput;
+        x = (x & m1 ) + ((x >>  1) & m1 );
+        x = (x & m2 ) + ((x >>  2) & m2 );
+        x = (x & m4 ) + ((x >>  4) & m4 );
+        x = (x & m8 ) + ((x >>  8) & m8 );
+        x = (x & m16) + ((x >> 16) & m16);
+        x = (x & m32) + ((x >> 32) & m32);
+        x = (x & m64) + ((x >> 64) & m64);
+        meta.middle_c1 = (bit<10>) x;
+    }
+    
+    action Layer0_Process(bit <10> offset) {
+    	bit <64> weight = 0;
+    	meta.NextLayerInput = 0;
+    	weights.read( weight, (bit<32>)offset+0);
         XNOR(weight);
         meta.XNOROutput = (bit<64>)meta.XNOROutput[44:0];
         BitCount_l0(meta.XNOROutput);
@@ -427,94 +510,6 @@ control Layer0ProcessControl() {
         BitCount_l0(meta.XNOROutput);
     }
     
-    apply{
-        Layer0_Process(0);
-    }
-}
-
-control SwitchIngress(
-    inout header_t hdr,
-    inout metadata_t meta,
-    in ingress_intrinsic_metadata_t ig_intr_md,
-    in ingress_intrinsic_metadata_from_parser_t ig_prsr_md,
-    inout ingress_intrinsic_metadata_for_deparser_t ig_dprsr_md,
-    inout ingress_intrinsic_metadata_for_tm_t ig_tm_md) {
-
-    Register<bit<64>, bit<32>>(1024) weights;
-    
-    action drop() {
-        ig_dprsr_md.drop_ctl = 0x1;
-    }
-
-    action send(PortId_t port) {
-        ig_tm_md.ucast_egress_port = port;
-    }
-
-    bit<128> m1 = 0x55555555555555555555555555555555;
-    bit<128> m2 = 0x33333333333333333333333333333333;
-    bit<128> m4 = 0x0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f;
-    bit<128> m8 = 0x00ff00ff00ff00ff00ff00ff00ff00ff;
-    bit<128> m16= 0x0000ffff0000ffff0000ffff0000ffff;
-    bit<128> m32= 0x00000000ffffffff00000000ffffffff;
-    bit<128> m64= 0x0000000000000000ffffffffffffffff;
-
-    action XNOR(bit<64> weight){
-        meta.XNOROutput = weight^meta.bnnInput;
-        meta.XNOROutput = ~meta.XNOROutput;
-    }
-
-    action BitCount_l0(bit<64> bitInput){
-        bit<128> x= (bit<128>)bitInput;
-        x = (x & m1 ) + ((x >>  1) & m1 );
-        x = (x & m2 ) + ((x >>  2) & m2 );
-        x = (x & m4 ) + ((x >>  4) & m4 );
-        x = (x & m8 ) + ((x >>  8) & m8 );
-        x = (x & m16) + ((x >> 16) & m16);
-        x = (x & m32) + ((x >> 32) & m32);
-        x = (x & m64) + ((x >> 64) & m64);
-        meta.activated = (x>22) ? (bit<1>)1 : 0;
-        meta.NextLayerInput = meta.NextLayerInput<<1;
-        meta.NextLayerInput = meta.NextLayerInput + (bit<64>)meta.activated;
-    }
-
-    action BitCount_l1(bit<64> bitInput){
-        bit<128> x= (bit<128>)bitInput;
-        x = (x & m1 ) + ((x >>  1) & m1 );
-        x = (x & m2 ) + ((x >>  2) & m2 );
-        x = (x & m4 ) + ((x >>  4) & m4 );
-        x = (x & m8 ) + ((x >>  8) & m8 );
-        x = (x & m16) + ((x >> 16) & m16);
-        x = (x & m32) + ((x >> 32) & m32);
-        x = (x & m64) + ((x >> 64) & m64);
-        meta.activated = (x>28) ? (bit<1>)1 : 0;
-        meta.NextLayerInput = meta.NextLayerInput<<1;
-        meta.NextLayerInput = meta.NextLayerInput + (bit<64>)meta.activated;
-    }
-
-    action BitCount_c0(bit<64> bitInput){
-        bit<128> x= (bit<128>)bitInput;
-        x = (x & m1 ) + ((x >>  1) & m1 );
-        x = (x & m2 ) + ((x >>  2) & m2 );
-        x = (x & m4 ) + ((x >>  4) & m4 );
-        x = (x & m8 ) + ((x >>  8) & m8 );
-        x = (x & m16) + ((x >> 16) & m16);
-        x = (x & m32) + ((x >> 32) & m32);
-        x = (x & m64) + ((x >> 64) & m64);
-        meta.middle_c0 = (bit<10>) x;
-    }
-
-    action BitCount_c1(bit<64> bitInput){
-        bit<128> x= (bit<128>)bitInput;
-        x = (x & m1 ) + ((x >>  1) & m1 );
-        x = (x & m2 ) + ((x >>  2) & m2 );
-        x = (x & m4 ) + ((x >>  4) & m4 );
-        x = (x & m8 ) + ((x >>  8) & m8 );
-        x = (x & m16) + ((x >> 16) & m16);
-        x = (x & m32) + ((x >> 32) & m32);
-        x = (x & m64) + ((x >> 64) & m64);
-        meta.middle_c1 = (bit<10>) x;
-    }
-
     action Layer1_Process(bit <10> offset){ 
         bit <64> weight = 0;
         meta.NextLayerInput = 0;
@@ -773,7 +768,7 @@ control SwitchIngress(
         meta.NextLayerInput = 0;
         BuildInput();
 
-        Layer0ProcessControl(0);
+        Layer0_Process(0);
         meta.bnnInput = meta.NextLayerInput;
         meta.NextLayerInput = 0;
 
